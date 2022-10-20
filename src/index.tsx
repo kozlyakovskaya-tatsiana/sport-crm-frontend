@@ -3,16 +3,9 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      light: "#a2faf6",
-      main: "#2adff7",
-    },
-  },
-});
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

@@ -1,6 +1,11 @@
 import React from "react";
-import { Avatar, Grid, TextField, Typography, useTheme } from "@mui/material";
+import { Avatar, Grid, Typography, useTheme } from "@mui/material";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
+import styles from "./LoginForm.module.css";
+import {
+  RoundedButton,
+  RoundedTextField,
+} from "../../styledComponents/styledComponents";
 
 export const LoginForm: React.FC = () => {
   const theme = useTheme();
@@ -20,13 +25,23 @@ export const LoginForm: React.FC = () => {
       <Grid item md={1}>
         <Typography variant={"h4"}>Sign In</Typography>
       </Grid>
-      <Grid item md={1}>
-        <TextField label="Email" variant="outlined" />
+      <Grid item md={1} className={styles.inputWrapper}>
+        <RoundedTextField fullWidth label="Email" variant="outlined" />
       </Grid>
-      <Grid item md={1}>
-        <TextField label="Password" variant="outlined" />
+      <Grid item md={1} className={styles.inputWrapper}>
+        <RoundedTextField fullWidth label="Password" variant="outlined" />
       </Grid>
-      <Grid item md={6} />
+      <Grid item md={1} className={styles.inputWrapper}>
+        <RoundedButton
+          fullWidth
+          variant="contained"
+          color="secondary"
+          size={"large"}
+        >
+          Sign In
+        </RoundedButton>
+      </Grid>
+      <Grid item md={5} />
     </Grid>
   );
 };
