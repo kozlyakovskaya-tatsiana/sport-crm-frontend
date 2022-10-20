@@ -4,7 +4,7 @@ const theme = createTheme({
   palette: {
     primary: {
       light: "#a2faf6",
-      main: "#2adff7",
+      main: "#1eb6f7",
     },
     secondary: {
       main: "#50faf7",
@@ -18,7 +18,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "&.MuiButton-root:hover": {
-            backgroundColor: "#d5f7f7",
+            backgroundColor: "#a2faf6",
           },
         },
       },

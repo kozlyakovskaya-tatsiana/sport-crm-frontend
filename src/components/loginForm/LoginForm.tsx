@@ -35,7 +35,7 @@ export const LoginForm: React.FC = () => {
         <RoundedButton
           fullWidth
           variant="contained"
-          color="secondary"
+          color="primary"
           size={"large"}
         >
           Sign In
