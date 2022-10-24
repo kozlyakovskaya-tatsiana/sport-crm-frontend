@@ -1,47 +1,100 @@
 import React from "react";
-import { Avatar, Grid, Typography, useTheme } from "@mui/material";
+import { Avatar, Grid, SxProps, Typography, useTheme } from "@mui/material";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
-import styles from "./LoginForm.module.css";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import {
   RoundedButton,
   RoundedTextField,
 } from "../../styledComponents/styledComponents";
 
-export const LoginForm: React.FC = () => {
+interface LoginFormValues {
+  email: string;
+  password: string;
+}
+const initialValues: LoginFormValues = { email: "", password: "" };
+
+const sxInputProps: SxProps = {
+  margin: "1%",
+};
+
+const LoginForm: React.FC = () => {
   const theme = useTheme();
+  const validationSchema = Yup.object({
+    email: Yup.string().email("Incorrect format of email").required("Required"),
+    password: Yup.string()
+      .required("Required")
+      .min(6, "Must be at least 6 symbols"),
+  });
+  const formik = useFormik<LoginFormValues>({
+    initialValues,
+    validationSchema,
+    onSubmit: (values: LoginFormValues) => {
+      console.log(values);
+    },
+    validateOnBlur: true,
+    validateOnChange: false,
+  });
   return (
     <Grid
       container
-      alignItems={"center"}
-      justifyContent={"center"}
-      direction={"column"}
+      alignItems="center"
+      justifyContent="center"
+      direction="column"
     >
-      <Grid item md={2} />
-      <Grid item md={1}>
+      <Grid item md={2} xs={1} />
+      <Grid item md={1} xs={1}>
         <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
-          <LockRoundedIcon fontSize={"large"} />
+          <LockRoundedIcon fontSize="large" />
         </Avatar>
       </Grid>
-      <Grid item md={1}>
-        <Typography variant={"h4"}>Sign In</Typography>
+      <Grid item md={1} xs={1}>
+        <Typography variant="h4">Sign In</Typography>
       </Grid>
-      <Grid item md={1} className={styles.inputWrapper}>
-        <RoundedTextField fullWidth label="Email" variant="outlined" />
+      <Grid item md={5} xs={5}>
+        <form onSubmit={formik.handleSubmit}>
+          <RoundedTextField
+            fullWidth
+            label="Email"
+            variant="outlined"
+            id="email"
+            name="email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.email && !!formik.errors.email}
+            helperText={formik.touched.email && formik.errors.email}
+            sx={sxInputProps}
+          />
+          <RoundedTextField
+            type="password"
+            fullWidth
+            label="Password"
+            variant="outlined"
+            id="password"
+            name="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.password && !!formik.errors.password}
+            helperText={formik.touched.password && formik.errors.password}
+            sx={sxInputProps}
+          />
+          <RoundedButton
+            fullWidth
+            variant="contained"
+            color="primary"
+            size="large"
+            type="submit"
+            sx={sxInputProps}
+          >
+            Sign In
+          </RoundedButton>
+        </form>
       </Grid>
-      <Grid item md={1} className={styles.inputWrapper}>
-        <RoundedTextField fullWidth label="Password" variant="outlined" />
-      </Grid>
-      <Grid item md={1} className={styles.inputWrapper}>
-        <RoundedButton
-          fullWidth
-          variant="contained"
-          color="primary"
-          size={"large"}
-        >
-          Sign In
-        </RoundedButton>
-      </Grid>
-      <Grid item md={5} />
+      <Grid item md={3} xs={4} />
     </Grid>
   );
 };
+
+export default LoginForm;

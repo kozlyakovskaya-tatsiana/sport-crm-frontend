@@ -7,7 +7,6 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    //"plugin:prettier/recommended",
     "airbnb",
     "prettier"
   ],
@@ -17,7 +16,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "@typescript-eslint", "react-hooks"],
   "settings": {
     "import/resolver": {
       "typescript": {}
@@ -27,6 +26,8 @@
     "react/react-in-jsx-scope": "off",
     "import/extensions": ["error", "ignorePackages", { "ts": "never", "tsx": "never" } ],
     "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
-    "react/jsx-filename-extension": "off"
+    "react/jsx-filename-extension": "off",
+    "react/jsx-props-no-spreading": "warn",
+    "no-unused-vars": "warn"
   }
 }
