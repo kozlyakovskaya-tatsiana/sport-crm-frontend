@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Typography, useTheme } from "@mui/material";
 import styles from "./LoginPage.module.css";
-import { LoginForm } from "../../components/loginForm/LoginForm";
+import LoginForm from "../../components/loginForm/LoginForm";
 
 const LoginPage: React.FC = () => {
   const theme = useTheme();
