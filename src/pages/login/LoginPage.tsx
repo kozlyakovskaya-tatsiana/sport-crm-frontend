@@ -1,10 +1,13 @@
 import React from "react";
 import { Grid, Typography, useTheme } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import styles from "./LoginPage.module.css";
 import LoginForm from "../../components/loginForm/LoginForm";
+import { HOME_ROUTE } from "../../consts/routes";
 
 const LoginPage: React.FC = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   return (
     <Grid container spacing={0}>
@@ -30,7 +33,7 @@ const LoginPage: React.FC = () => {
         <Grid item md={4} xs={3} />
       </Grid>
       <Grid container item xs={5} md={5} direction="row">
-        <LoginForm />
+        <LoginForm onSuccessSubmit={() => navigate(HOME_ROUTE)} />
       </Grid>
     </Grid>
   );

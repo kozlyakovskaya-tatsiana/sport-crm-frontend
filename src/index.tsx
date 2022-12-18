@@ -2,9 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { ThemeProvider } from "@mui/material";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter } from "react-router-dom";
 import theme from "./theme";
+import reportWebVitals from "./reportWebVitals";
+import { AuthenticationProvider } from "./contexts/AuthContext";
+import App from "./App";
+import { WithAxios } from "./axios/AxiosInterceptor";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -12,7 +15,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <App />
+      <BrowserRouter>
+        <AuthenticationProvider>
+          <WithAxios>
+            <App />
+          </WithAxios>
+        </AuthenticationProvider>
+      </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>
 );

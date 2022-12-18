@@ -7,6 +7,9 @@ import {
   RoundedButton,
   RoundedTextField,
 } from "../../styledComponents/styledComponents";
+import authService from "../../api/authentication/authService";
+import localStorageService from "../../services/localStorageService";
+import useAuth from "../../contexts/AuthContext";
 
 interface LoginFormValues {
   email: string;
@@ -17,20 +20,26 @@ const initialValues: LoginFormValues = { email: "", password: "" };
 const sxInputProps: SxProps = {
   margin: "1%",
 };
-
-const LoginForm: React.FC = () => {
+const validationSchema = Yup.object({
+  email: Yup.string().email("Incorrect format of email").required("Required"),
+  password: Yup.string()
+    .required("Required")
+    .min(6, "Must be at least 6 symbols"),
+});
+const LoginForm: React.FC<{ onSuccessSubmit?: () => void }> = (props) => {
   const theme = useTheme();
-  const validationSchema = Yup.object({
-    email: Yup.string().email("Incorrect format of email").required("Required"),
-    password: Yup.string()
-      .required("Required")
-      .min(6, "Must be at least 6 symbols"),
-  });
+  const { refreshAuthInfo } = useAuth();
   const formik = useFormik<LoginFormValues>({
     initialValues,
     validationSchema,
     onSubmit: (values: LoginFormValues) => {
-      console.log(values);
+      authService.signIn(values.email, values.password).then((response) => {
+        const result = response.data;
+        localStorageService.setAccessToken(result.accessToken);
+        localStorageService.setRefreshToken(result.refreshToken);
+        refreshAuthInfo();
+        props.onSuccessSubmit?.();
+      });
     },
     validateOnBlur: true,
     validateOnChange: false,

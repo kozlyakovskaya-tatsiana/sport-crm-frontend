@@ -28,6 +28,12 @@
     "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
     "react/jsx-filename-extension": "off",
     "react/jsx-props-no-spreading": "warn",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "no-param-reassign": "warn",
+    "no-shadow": "warn",
+    "no-use-before-define": "warn",
+    "import/prefer-default-export": "off",
+    "react/destructuring-assignment": "off",
+    "react/require-default-props": "off"
   }
 }
