@@ -57,16 +57,16 @@ export const HomePage: React.FC = () => {
 
   return (
     <>
-      <Grid container spacing={3} sx={{ paddingTop: "10%" }}>
+      <Grid container sx={{ alignItems: "center" }}>
         {sectionCards.map((card) => (
           <Grid
             item
-            md={4}
-            xs={4}
+            md={6}
+            xs={12}
             xl={4}
             lg={4}
             key={generateUniqueID()}
-            sx={{ display: "flex", justifyContent: "center" }}
+            sx={{ display: "flex", justifyContent: "center", paddingTop: "5%" }}
           >
             <SectionCard
               title={card?.title}
