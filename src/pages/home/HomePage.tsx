@@ -3,17 +3,20 @@ import { Grid, SxProps, useTheme } from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
 import TodayIcon from "@mui/icons-material/Today";
 import SportsVolleyballIcon from "@mui/icons-material/SportsVolleyball";
-import PaymentIcon from "@mui/icons-material/Payment";
+import MapIcon from "@mui/icons-material/Map";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
-import MapIcon from "@mui/icons-material/Map";
 import { useNavigate } from "react-router-dom";
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import {
   SectionCard,
   SectionCardProps,
 } from "../../components/sectionCard/SectionCard";
-import { USERS_MANAGEMENT_ROUTE } from "../../consts/routes";
+import {
+  ACTIVITIES_ROUTE,
+  GROUPS_ROUTE,
+  USERS_MANAGEMENT_ROUTE,
+} from "../../consts/routes";
 
 export const HomePage: React.FC = () => {
   const theme = useTheme();
@@ -28,16 +31,14 @@ export const HomePage: React.FC = () => {
       image: <TodayIcon sx={baseSxPropsForIcons} />,
     },
     {
-      title: "Companies",
+      title: "Groups",
       image: <Diversity3Icon sx={baseSxPropsForIcons} />,
+      onClick: () => navigate(GROUPS_ROUTE),
     },
     {
       title: "Activities",
       image: <SportsVolleyballIcon sx={baseSxPropsForIcons} />,
-    },
-    {
-      title: "Prices",
-      image: <PaymentIcon sx={baseSxPropsForIcons} />,
+      onClick: () => navigate(ACTIVITIES_ROUTE),
     },
     {
       title: "Reports",
@@ -49,25 +50,32 @@ export const HomePage: React.FC = () => {
       onClick: () => navigate(USERS_MANAGEMENT_ROUTE),
     },
     {
-      title: "Gyms",
+      title: "Playgrounds",
       image: <MapIcon sx={baseSxPropsForIcons} />,
     },
   ];
+
   return (
-    <Grid
-      container
-      spacing={3}
-      sx={{ paddingRight: "5%", paddingLeft: "5%", paddingTop: "5%" }}
-    >
-      {sectionCards.map((card) => (
-        <Grid item md={3} key={generateUniqueID()}>
-          <SectionCard
-            title={card?.title}
-            image={card?.image}
-            onClick={card.onClick}
-          />
-        </Grid>
-      ))}
-    </Grid>
+    <>
+      <Grid container spacing={3} sx={{ paddingTop: "10%" }}>
+        {sectionCards.map((card) => (
+          <Grid
+            item
+            md={4}
+            xs={4}
+            xl={4}
+            lg={4}
+            key={generateUniqueID()}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
+            <SectionCard
+              title={card?.title}
+              image={card?.image}
+              onClick={card.onClick}
+            />
+          </Grid>
+        ))}
+      </Grid>
+    </>
   );
 };

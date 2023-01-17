@@ -3,13 +3,15 @@ import { Avatar, Grid, SxProps, Typography, useTheme } from "@mui/material";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { AxiosResponse } from "axios";
 import {
   RoundedButton,
   RoundedTextField,
 } from "../../styledComponents/styledComponents";
 import authService from "../../api/authentication/authService";
 import localStorageService from "../../services/localStorageService";
-import useAuth from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
+import "react-toastify/dist/ReactToastify.css";
 
 interface LoginFormValues {
   email: string;
@@ -26,20 +28,37 @@ const validationSchema = Yup.object({
     .required("Required")
     .min(6, "Must be at least 6 symbols"),
 });
-const LoginForm: React.FC<{ onSuccessSubmit?: () => void }> = (props) => {
+const LoginForm: React.FC<{
+  onSuccessLogin?: () => void;
+  onFailLogin?: () => void;
+}> = (props) => {
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const theme = useTheme();
   const { refreshAuthInfo } = useAuth();
+
+  function onSuccessLogin(response: AxiosResponse) {
+    const result = response.data;
+    localStorageService.setAccessToken(result.accessToken);
+    localStorageService.setRefreshToken(result.refreshToken);
+    refreshAuthInfo();
+    props.onSuccessLogin?.();
+  }
   const formik = useFormik<LoginFormValues>({
     initialValues,
     validationSchema,
     onSubmit: (values: LoginFormValues) => {
-      authService.signIn(values.email, values.password).then((response) => {
-        const result = response.data;
-        localStorageService.setAccessToken(result.accessToken);
-        localStorageService.setRefreshToken(result.refreshToken);
-        refreshAuthInfo();
-        props.onSuccessSubmit?.();
-      });
+      setIsLoading(true);
+      authService
+        .signIn(values.email, values.password)
+        .then((response) => {
+          onSuccessLogin(response);
+        })
+        .catch((error) => {
+          if (error.response) {
+            props.onFailLogin?.();
+          }
+        })
+        .finally(() => setIsLoading(false));
     },
     validateOnBlur: true,
     validateOnChange: false,
@@ -91,17 +110,20 @@ const LoginForm: React.FC<{ onSuccessSubmit?: () => void }> = (props) => {
           />
           <RoundedButton
             fullWidth
+            style={{ height: "40px" }}
             variant="contained"
             color="primary"
             size="large"
             type="submit"
             sx={sxInputProps}
+            disabled={isLoading}
           >
-            Sign In
+            <span>SIGN IN</span>
           </RoundedButton>
         </form>
       </Grid>
-      <Grid item md={3} xs={4} />
+      <Grid item md={1} xs={1} />
+      <Grid item md={2} xs={3} />
     </Grid>
   );
 };

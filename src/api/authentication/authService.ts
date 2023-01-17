@@ -1,16 +1,16 @@
 import { AxiosResponse } from "axios";
 import jwtDecode from "jwt-decode";
-import baseSelfFitAxios from "../../axios/baseSelfFitAxios";
+import selfFitAxios from "../../axios/selfFitAxios";
 import { RefreshTokensResponse } from "./responses/RefreshTokensResponse";
 import { SignInUserResult } from "./responses/SignInUserResult";
-import { SIGN_IN_API } from "../constants/endpoints";
+import { REFRESH_TOKENS_API, SIGN_IN_API } from "../constants/endpoints";
 import localStorageService from "../../services/localStorageService";
 
 async function signIn(
   email: string,
   password: string
 ): Promise<AxiosResponse<SignInUserResult>> {
-  return baseSelfFitAxios.post<SignInUserResult>(SIGN_IN_API, {
+  return selfFitAxios.post<SignInUserResult>(SIGN_IN_API, {
     email,
     password,
   });
@@ -19,13 +19,10 @@ async function refreshTokens(
   accessToken: string,
   refreshToken: string
 ): Promise<AxiosResponse<RefreshTokensResponse>> {
-  return baseSelfFitAxios.post<RefreshTokensResponse>(
-    "Authentication/refresh",
-    {
-      accessToken,
-      refreshToken,
-    }
-  );
+  return selfFitAxios.post<RefreshTokensResponse>(REFRESH_TOKENS_API, {
+    accessToken,
+    refreshToken,
+  });
 }
 function signOut() {
   localStorageService.clearTokens();

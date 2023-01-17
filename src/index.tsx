@@ -8,21 +8,24 @@ import reportWebVitals from "./reportWebVitals";
 import { AuthenticationProvider } from "./contexts/AuthContext";
 import App from "./App";
 import { WithAxios } from "./axios/AxiosInterceptor";
+import { NotificationToastProvider } from "./contexts/NotificationToastContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <AuthenticationProvider>
-          <WithAxios>
-            <App />
-          </WithAxios>
-        </AuthenticationProvider>
-      </BrowserRouter>
-    </ThemeProvider>
+    <NotificationToastProvider>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <AuthenticationProvider>
+            <WithAxios>
+              <App />
+            </WithAxios>
+          </AuthenticationProvider>
+        </BrowserRouter>
+      </ThemeProvider>
+    </NotificationToastProvider>
   </React.StrictMode>
 );
 

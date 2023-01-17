@@ -1,11 +1,14 @@
 import axios from "axios";
 import localStorageService from "../services/localStorageService";
 
-const baseSelfFitAxios = axios.create({
+const selfFitAxios = axios.create({
   baseURL: process.env.REACT_APP_SELF_FIT_BACKEND_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-baseSelfFitAxios.interceptors.request.use((config) => {
+selfFitAxios.interceptors.request.use((config) => {
   const accessToken = localStorageService.getAccessToken();
   if (accessToken) {
     config.headers = {
@@ -16,4 +19,4 @@ baseSelfFitAxios.interceptors.request.use((config) => {
   return config;
 });
 
-export default baseSelfFitAxios;
+export default selfFitAxios;

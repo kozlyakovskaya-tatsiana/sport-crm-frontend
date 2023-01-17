@@ -1,5 +1,6 @@
 const ACCESS_TOKEN_NAME = "access_token";
 const REFRESH_TOKEN_NAME = "refresh_token";
+
 function setAccessToken(accessToken: string) {
   return localStorage.setItem(ACCESS_TOKEN_NAME, accessToken);
 }

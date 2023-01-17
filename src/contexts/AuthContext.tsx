@@ -43,6 +43,6 @@ export const AuthenticationProvider: React.FC<{ children: React.ReactNode }> = (
   );
 };
 
-export default function useAuth() {
+export function useAuth() {
   return useContext(AuthContext);
 }
