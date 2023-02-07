@@ -3,7 +3,7 @@ import jwtDecode from "jwt-decode";
 import selfFitAxios from "../../axios/selfFitAxios";
 import { RefreshTokensResponse } from "./responses/RefreshTokensResponse";
 import { SignInUserResult } from "./responses/SignInUserResult";
-import { REFRESH_TOKENS_API, SIGN_IN_API } from "../constants/endpoints";
+import { REFRESH_TOKENS_API, SIGN_IN_API } from "../endpoints";
 import localStorageService from "../../services/localStorageService";
 
 async function signIn(

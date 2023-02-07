@@ -7,6 +7,7 @@ interface NotificationToastContextType {
     type?: "info" | "success" | "warning" | "error" | "default",
     options?: ToastOptions
   ): void;
+  somethingWentWrongNotify(): void;
 }
 
 const NotificationToastContext =
@@ -40,9 +41,20 @@ export const NotificationToastProvider: React.FC<{
         toast(message);
     }
   }
+  function showSomethingWentWrongNotify() {
+    toast.error("Something went wrong. Please contact System Administrator.", {
+      position: "top-right",
+      theme: "colored",
+    });
+  }
 
   return (
-    <NotificationToastContext.Provider value={{ notify: showNotification }}>
+    <NotificationToastContext.Provider
+      value={{
+        notify: showNotification,
+        somethingWentWrongNotify: showSomethingWentWrongNotify,
+      }}
+    >
       {props.children}
       <ToastContainer />
     </NotificationToastContext.Provider>

@@ -3,7 +3,7 @@ import { Avatar, Grid, SxProps, Typography, useTheme } from "@mui/material";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import {
   RoundedButton,
   RoundedTextField,
@@ -20,9 +20,9 @@ interface LoginFormValues {
 const initialValues: LoginFormValues = { email: "", password: "" };
 
 const sxInputProps: SxProps = {
-  margin: "1%",
+  margin: "1% 0 1% 0",
 };
-const validationSchema = Yup.object({
+const loginFormValidationSchema = Yup.object({
   email: Yup.string().email("Incorrect format of email").required("Required"),
   password: Yup.string()
     .required("Required")
@@ -30,7 +30,7 @@ const validationSchema = Yup.object({
 });
 const LoginForm: React.FC<{
   onSuccessLogin?: () => void;
-  onFailLogin?: () => void;
+  onFailLogin?: (error: AxiosError) => void;
 }> = (props) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const theme = useTheme();
@@ -45,7 +45,7 @@ const LoginForm: React.FC<{
   }
   const formik = useFormik<LoginFormValues>({
     initialValues,
-    validationSchema,
+    validationSchema: loginFormValidationSchema,
     onSubmit: (values: LoginFormValues) => {
       setIsLoading(true);
       authService
@@ -54,9 +54,7 @@ const LoginForm: React.FC<{
           onSuccessLogin(response);
         })
         .catch((error) => {
-          if (error.response) {
-            props.onFailLogin?.();
-          }
+          props.onFailLogin?.(error);
         })
         .finally(() => setIsLoading(false));
     },
