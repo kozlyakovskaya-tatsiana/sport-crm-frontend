@@ -18,16 +18,13 @@ interface ActivityFormValues {
   name: string;
   costPerHour: number;
 }
-const sxInputProps: SxProps = {
-  margin: "2% 0 2% 0",
-};
 const activityFormValidationSchema = Yup.object({
   name: string().required("Required"),
   costPerHour: number()
     .required("Required")
     .positive("Cost must be positive value"),
 });
-export const ActivityForm: React.FC<ActivityFormProps> = (props) => {
+export const CreateActivityForm: React.FC<ActivityFormProps> = (props) => {
   const [creatingActivityInProgress, setCreatingActivityInProgress] =
     React.useState<boolean>(false);
 
@@ -35,8 +32,8 @@ export const ActivityForm: React.FC<ActivityFormProps> = (props) => {
     setCreatingActivityInProgress(true);
     activityService
       .createActivity({
-        name: activity.name,
-        costPerHour: activity.costPerHour,
+        activityName: activity.name,
+        costPerHourInByn: activity.costPerHour,
       })
       .then(() => {
         props.onSuccess?.();
@@ -48,6 +45,7 @@ export const ActivityForm: React.FC<ActivityFormProps> = (props) => {
         setCreatingActivityInProgress(false);
       });
   };
+
   const formik = useFormik({
     initialValues: { name: "", costPerHour: 0 },
     validationSchema: activityFormValidationSchema,
@@ -81,7 +79,6 @@ export const ActivityForm: React.FC<ActivityFormProps> = (props) => {
             onBlur={formik.handleBlur}
             error={formik.touched.name && !!formik.errors.name}
             helperText={formik.touched.name && formik.errors.name}
-            sx={{ sxInputProps }}
           />
           <RoundedTextField
             type="number"
@@ -101,7 +98,6 @@ export const ActivityForm: React.FC<ActivityFormProps> = (props) => {
               ),
               inputMode: "numeric",
             }}
-            sx={sxInputProps}
           />
           <RoundedButton
             fullWidth
@@ -110,7 +106,6 @@ export const ActivityForm: React.FC<ActivityFormProps> = (props) => {
             color="primary"
             size="large"
             type="submit"
-            sx={sxInputProps}
             disabled={creatingActivityInProgress}
           >
             <span>Create</span>

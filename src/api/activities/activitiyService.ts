@@ -1,9 +1,21 @@
+import { Guid } from "guid-typescript";
 import { CreateActivityRequest } from "./requests/CreateActivityRequest";
 import selfFitAxios from "../../axios/selfFitAxios";
-import { ACTIVITIES_ENDPOINT } from "../endpoints";
+import { SPORT_ACTIVITIES_API } from "../endpoints";
+import { SportActivity } from "../../models/SportActivity";
 
+async function getActivities() {
+  return selfFitAxios.get<SportActivity[]>(SPORT_ACTIVITIES_API);
+}
 async function createActivity(createActivityRequest: CreateActivityRequest) {
-  return selfFitAxios.post(ACTIVITIES_ENDPOINT, createActivityRequest);
+  return selfFitAxios.post(SPORT_ACTIVITIES_API, createActivityRequest);
+}
+async function deleteActivity(activityId: Guid) {
+  return selfFitAxios.delete(`${SPORT_ACTIVITIES_API}/${activityId}`);
 }
 
-export const activityService = { createActivity };
+export const activityService = {
+  createActivity,
+  getActivities,
+  deleteActivity,
+};

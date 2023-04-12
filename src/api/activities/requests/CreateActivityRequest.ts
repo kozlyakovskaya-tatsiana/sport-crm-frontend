@@ -1,4 +1,4 @@
 export interface CreateActivityRequest {
-  name: string;
-  costPerHour: number;
+  activityName: string;
+  costPerHourInByn: number;
 }

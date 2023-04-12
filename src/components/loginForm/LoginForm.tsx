@@ -38,8 +38,8 @@ const LoginForm: React.FC<{
 
   function onSuccessLogin(response: AxiosResponse) {
     const result = response.data;
-    localStorageService.setAccessToken(result.accessToken);
-    localStorageService.setRefreshToken(result.refreshToken);
+    localStorageService.setAccessToken(result.AccessToken);
+    localStorageService.setRefreshToken(result.RefreshToken);
     refreshAuthInfo();
     props.onSuccessLogin?.();
   }

@@ -9,12 +9,13 @@ import Diversity3Icon from "@mui/icons-material/Diversity3";
 import { useNavigate } from "react-router-dom";
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import {
-  SectionCard,
+  SimpleCard,
   SectionCardProps,
-} from "../../components/sectionCard/SectionCard";
+} from "../../components/cards/SimpleCard";
 import {
   ACTIVITIES_ROUTE,
   GROUPS_ROUTE,
+  SPORT_PLAYGROUNDS_ROUTE,
   USERS_MANAGEMENT_ROUTE,
 } from "../../consts/routes";
 
@@ -52,6 +53,7 @@ export const HomePage: React.FC = () => {
     {
       title: "Playgrounds",
       image: <MapIcon sx={baseSxPropsForIcons} />,
+      onClick: () => navigate(SPORT_PLAYGROUNDS_ROUTE),
     },
   ];
 
@@ -68,7 +70,7 @@ export const HomePage: React.FC = () => {
             key={generateUniqueID()}
             sx={{ display: "flex", justifyContent: "center", paddingTop: "5%" }}
           >
-            <SectionCard
+            <SimpleCard
               title={card?.title}
               image={card?.image}
               onClick={card.onClick}

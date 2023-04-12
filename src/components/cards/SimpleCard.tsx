@@ -8,7 +8,7 @@ export interface SectionCardProps {
   onClick?: () => void;
 }
 
-export const SectionCard: React.FC<SectionCardProps> = (props) => {
+export const SimpleCard: React.FC<SectionCardProps> = (props) => {
   const theme = useTheme();
 
   return (
