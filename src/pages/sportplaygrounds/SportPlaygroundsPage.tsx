@@ -1,5 +1,7 @@
 import React from "react";
 import {
+  Card,
+  CardMedia,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -17,29 +19,26 @@ import {
 } from "../../components/createPlaygroundForm/CreatePlaygroundForm";
 import { sportPlaygroundsService } from "../../api/sportPlaygrounds/sportPlaygroundsService";
 import { CreateSportPlaygroundRequest } from "../../api/sportPlaygrounds/requests/CreateSportPlaygroundRequest";
+import { SportPlayground } from "../../models/SportPlayground";
+import { SportPlayGroundCard } from "../../components/sportPlaygroundCard/SportPlayGroundCard";
 
 export const SportPlaygroundsPage: React.FC = (props) => {
+  const [sportPlaygrounds, setSportPlaygrounds] = React.useState<
+    SportPlayground[]
+  >([]);
   const [createPlaygroundModalOpen, setCreatePlaygroundModalOpen] =
     React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    refreshSportPlaygrounds();
+  }, []);
+
   const theme = useTheme();
 
-  const playgroundCards: SectionCardProps[] = [
-    {
-      title: "1 sprotzal",
-      // image: <TodayIcon sx={baseSxPropsForIcons} />,
-    },
-    {
-      title: "2 sportzal",
-      // image: <Diversity3Icon sx={baseSxPropsForIcons} />,
-    },
-    {
-      title: "3 sportzal",
-      // image: <SportsVolleyballIcon sx={baseSxPropsForIcons} />,
-    },
-  ];
-
-  const refreshSportPlaygrounds = async () => {
-    await sportPlaygroundsService.getSportPlaygrounds();
+  const refreshSportPlaygrounds = () => {
+    sportPlaygroundsService.getSportPlaygrounds().then((response) => {
+      setSportPlaygrounds(response.data);
+    });
   };
 
   const onSportPlaygroundSubmit = async (
@@ -85,7 +84,7 @@ export const SportPlaygroundsPage: React.FC = (props) => {
       <Typography variant="h4" sx={{ textAlign: "center", paddingTop: "2%" }}>
         Sport Playgrounds
       </Typography>
-      <Grid container sx={{ paddingTop: "1%", paddingBottom: "1%" }}>
+      <Grid container sx={{ paddingTop: "1%" }}>
         <Grid item xs={1} md={1} lg={1} />
         <Grid item xs={10} sm={10} md={10} lg={10}>
           <IconButton
@@ -98,23 +97,23 @@ export const SportPlaygroundsPage: React.FC = (props) => {
         <Grid item xs={1} md={1} lg={1} />
       </Grid>
       <Grid container sx={{ alignItems: "center" }}>
-        {/* {playgroundCards.map((card) => ( */}
-        {/*  <Grid */}
-        {/*    item */}
-        {/*    md={6} */}
-        {/*    xs={12} */}
-        {/*    xl={4} */}
-        {/*    lg={4} */}
-        {/*    key={generateUniqueID()} */}
-        {/*    sx={{ display: "flex", justifyContent: "center", paddingTop: "5%" }} */}
-        {/*  > */}
-        {/*    <SimpleCard */}
-        {/*      title={card?.title} */}
-        {/*      image={card?.image} */}
-        {/*      onClick={card.onClick} */}
-        {/*    /> */}
-        {/*  </Grid> */}
-        {/* ))} */}
+        {sportPlaygrounds?.map((sportPlayground) => (
+          <Grid
+            item
+            md={6}
+            xs={12}
+            xl={4}
+            lg={4}
+            key={sportPlayground.id.toString()}
+            sx={{ display: "flex", justifyContent: "center", paddingTop: "1%" }}
+          >
+            <SportPlayGroundCard
+              name={sportPlayground.name}
+              imgSrc={sportPlayground.image.base64Data}
+              activitiesCount={sportPlayground.sportActivities.length}
+            />
+          </Grid>
+        ))}
       </Grid>
       {renderCreateSportPlaygroundDialog()}
     </>
