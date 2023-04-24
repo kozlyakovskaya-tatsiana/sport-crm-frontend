@@ -19,14 +19,12 @@ export const RoundedButton = styled(Button)({
   "&.MuiButtonBase-root": {
     borderRadius: "20px",
   },
-  margin: "2% 0 2% 0",
 });
 
 export const RoundedSelect = styled(Select)({
-  ".MuiSelect-root": {
+  "&.MuiInputBase-root": {
     borderRadius: "20px",
   },
-  margin: "2% 0 2% 0",
 });
 
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({

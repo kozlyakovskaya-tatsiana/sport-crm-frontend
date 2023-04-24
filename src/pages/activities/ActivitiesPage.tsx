@@ -14,12 +14,12 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import { AxiosError } from "axios";
 import { Guid } from "guid-typescript";
-import { CreateActivityForm } from "../../components/activityForm/CreateActivityForm";
+import { CreateActivityForm } from "../../components/sportActivities/activityForm/CreateActivityForm";
 import { useToastNotify } from "../../contexts/NotificationToastContext";
-import { ActivitiesTable } from "../../components/activitiesTable/ActivitiesTable";
+import { ActivitiesTable } from "../../components/sportActivities/activitiesTable/ActivitiesTable";
 import { SportActivity } from "../../models/SportActivity";
-import { activityService } from "../../api/activities/activitiyService";
-import { CreatePlaygroundForm } from "../../components/createPlaygroundForm/CreatePlaygroundForm";
+import { sportActivitiesService } from "../../api/activities/activitiyService";
+import { DialogWrapperWithCrossButton } from "../../components/DialogWrapperWithCrossButton";
 
 export const ActivitiesPage: React.FC = (props) => {
   const [activities, setActivities] = React.useState<SportActivity[]>([]);
@@ -38,7 +38,7 @@ export const ActivitiesPage: React.FC = (props) => {
   }, []);
 
   const refreshActivityData = () => {
-    activityService
+    sportActivitiesService
       .getActivities()
       .then((response) => {
         setActivities(response.data);
@@ -71,28 +71,15 @@ export const ActivitiesPage: React.FC = (props) => {
   };
 
   const renderCreateActivityDialog = () => (
-    <Dialog open={isCreateActivityModalOpen}>
-      <DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={() => setIsCreateActivityModalOpen(false)}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent sx={{ width: "500px" }}>
-        <CreateActivityForm
-          onSuccess={onSuccessCreatingActivity}
-          onFail={onFailCreatingActivity}
-        />
-      </DialogContent>
-    </Dialog>
+    <DialogWrapperWithCrossButton
+      isOpen={isCreateActivityModalOpen}
+      onCloseModalClick={() => setIsCreateActivityModalOpen(false)}
+    >
+      <CreateActivityForm
+        onSuccess={onSuccessCreatingActivity}
+        onFail={onFailCreatingActivity}
+      />
+    </DialogWrapperWithCrossButton>
   );
 
   const handleCloseDeleteWarningDialog = () => {
@@ -101,7 +88,7 @@ export const ActivitiesPage: React.FC = (props) => {
 
   const handleConfirmDeleteWarningDialog = async () => {
     try {
-      await activityService.deleteActivity(selectedActivityId);
+      await sportActivitiesService.deleteActivity(selectedActivityId);
       setOpenDeleteWarningDialog(false);
       await refreshActivityData();
     } catch (error) {

@@ -14,11 +14,11 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Guid } from "guid-typescript";
-import { Currency } from "../../Currency";
-import { useAuth } from "../../contexts/AuthContext";
-import { SportActivity } from "../../models/SportActivity";
-import { StyledTableCell } from "../../styledComponents/styledComponents";
-import { NoDataToDisplay } from "../noDataToDisplay/NoDataToDisplay";
+import { Currency } from "../../../Currency";
+import { useAuth } from "../../../contexts/AuthContext";
+import { SportActivity } from "../../../models/SportActivity";
+import { StyledTableCell } from "../../../styledComponents/styledComponents";
+import { NoDataToDisplay } from "../../NoDataToDisplay";
 
 const instructorsTableHeaders = ["Activity", "Cost per hour", "Groups"];
 const adminTableHeaders = [...instructorsTableHeaders, "", ""];

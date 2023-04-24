@@ -5,14 +5,9 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  List,
-  ListItem,
-  Stack,
   Typography,
 } from "@mui/material";
-import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
-import { Label } from "@mui/icons-material";
-import NoImage from "../../images/undefinedUser.png";
+import { Guid } from "guid-typescript";
 
 export interface SportPlayGroundCardProps {
   name: string;

@@ -12,11 +12,11 @@ import { useFormik } from "formik";
 import {
   RoundedButton,
   RoundedTextField,
-} from "../../styledComponents/styledComponents";
-import { SportActivity } from "../../models/SportActivity";
-import { activityService } from "../../api/activities/activitiyService";
-import { UploadFilesArea } from "../UploadFilesArea";
-import { useToastNotify } from "../../contexts/NotificationToastContext";
+} from "../../../styledComponents/styledComponents";
+import { SportActivity } from "../../../models/SportActivity";
+import { sportActivitiesService } from "../../../api/activities/activitiyService";
+import { UploadFilesArea } from "../../UploadFilesArea";
+import { useToastNotify } from "../../../contexts/NotificationToastContext";
 
 export interface CreateSportPlaygroundFormValues {
   name: string;
@@ -50,7 +50,7 @@ export const CreatePlaygroundForm: React.FC<CreatePlaygroundFormProps> = (
   const theme = useTheme();
 
   React.useEffect(() => {
-    activityService
+    sportActivitiesService
       .getActivities()
       .then((response) => setSportActivities(response.data));
 

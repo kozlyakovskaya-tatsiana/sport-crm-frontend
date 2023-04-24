@@ -1,7 +1,5 @@
 import React from "react";
 import {
-  Card,
-  CardMedia,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -12,15 +10,15 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
-import { SectionCardProps } from "../../components/cards/SimpleCard";
+import { Guid } from "guid-typescript";
 import {
   CreatePlaygroundForm,
   CreateSportPlaygroundFormValues,
-} from "../../components/createPlaygroundForm/CreatePlaygroundForm";
+} from "../../components/sportplaygrounds/createPlaygroundForm/CreatePlaygroundForm";
 import { sportPlaygroundsService } from "../../api/sportPlaygrounds/sportPlaygroundsService";
 import { CreateSportPlaygroundRequest } from "../../api/sportPlaygrounds/requests/CreateSportPlaygroundRequest";
 import { SportPlayground } from "../../models/SportPlayground";
-import { SportPlayGroundCard } from "../../components/sportPlaygroundCard/SportPlayGroundCard";
+import { SportPlayGroundCard } from "../../components/sportplaygrounds/sportPlaygroundCard/SportPlayGroundCard";
 
 export const SportPlaygroundsPage: React.FC = (props) => {
   const [sportPlaygrounds, setSportPlaygrounds] = React.useState<
@@ -29,11 +27,11 @@ export const SportPlaygroundsPage: React.FC = (props) => {
   const [createPlaygroundModalOpen, setCreatePlaygroundModalOpen] =
     React.useState<boolean>(false);
 
+  const theme = useTheme();
+
   React.useEffect(() => {
     refreshSportPlaygrounds();
   }, []);
-
-  const theme = useTheme();
 
   const refreshSportPlaygrounds = () => {
     sportPlaygroundsService.getSportPlaygrounds().then((response) => {
@@ -53,6 +51,15 @@ export const SportPlaygroundsPage: React.FC = (props) => {
     try {
       await sportPlaygroundsService.createSportPlayground(body);
       await refreshSportPlaygrounds();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onDeleteSportPlaygroundClick = async (id: Guid) => {
+    try {
+      const response = await sportPlaygroundsService.deleteSportPlayground(id);
+      response.data && refreshSportPlaygrounds();
     } catch (error) {
       console.log(error);
     }
@@ -111,6 +118,9 @@ export const SportPlaygroundsPage: React.FC = (props) => {
               name={sportPlayground.name}
               imgSrc={sportPlayground.image.base64Data}
               activitiesCount={sportPlayground.sportActivities.length}
+              onDeleteButtonClick={() =>
+                onDeleteSportPlaygroundClick(sportPlayground.id)
+              }
             />
           </Grid>
         ))}

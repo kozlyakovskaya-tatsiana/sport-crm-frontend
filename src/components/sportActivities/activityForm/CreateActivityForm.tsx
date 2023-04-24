@@ -7,8 +7,8 @@ import { AxiosError } from "axios";
 import {
   RoundedButton,
   RoundedTextField,
-} from "../../styledComponents/styledComponents";
-import { activityService } from "../../api/activities/activitiyService";
+} from "../../../styledComponents/styledComponents";
+import { sportActivitiesService } from "../../../api/activities/activitiyService";
 
 export interface ActivityFormProps {
   onSuccess?: () => void;
@@ -30,7 +30,7 @@ export const CreateActivityForm: React.FC<ActivityFormProps> = (props) => {
 
   const createActivity = (activity: ActivityFormValues) => {
     setCreatingActivityInProgress(true);
-    activityService
+    sportActivitiesService
       .createActivity({
         activityName: activity.name,
         costPerHourInByn: activity.costPerHour,
