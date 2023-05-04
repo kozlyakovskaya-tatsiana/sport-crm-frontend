@@ -7,7 +7,6 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-import { Guid } from "guid-typescript";
 
 export interface SportPlayGroundCardProps {
   name: string;

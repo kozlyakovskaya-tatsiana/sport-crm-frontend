@@ -1,4 +1,3 @@
-import { Guid } from "guid-typescript";
 import { AxiosResponse } from "axios";
 import { CreateActivityRequest } from "./requests/CreateActivityRequest";
 import selfFitAxios from "../../axios/selfFitAxios";
@@ -14,7 +13,7 @@ async function createActivity(
   return selfFitAxios.post(SPORT_ACTIVITIES_API, createActivityRequest);
 }
 async function deleteActivity(
-  activityId: Guid
+  activityId: string
 ): Promise<AxiosResponse<boolean>> {
   return selfFitAxios.delete(`${SPORT_ACTIVITIES_API}/${activityId}`);
 }

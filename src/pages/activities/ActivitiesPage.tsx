@@ -3,7 +3,6 @@ import {
   Typography,
   Dialog,
   DialogTitle,
-  DialogContent,
   IconButton,
   useTheme,
   DialogActions,
@@ -11,9 +10,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
 import { AxiosError } from "axios";
-import { Guid } from "guid-typescript";
 import { CreateActivityForm } from "../../components/sportActivities/activityForm/CreateActivityForm";
 import { useToastNotify } from "../../contexts/NotificationToastContext";
 import { ActivitiesTable } from "../../components/sportActivities/activitiesTable/ActivitiesTable";
@@ -27,9 +24,8 @@ export const ActivitiesPage: React.FC = (props) => {
     React.useState(false);
   const [openDeleteWarningDialog, setOpenDeleteWarningDialog] =
     React.useState(false);
-  const [selectedActivityId, setSelectedActivityId] = React.useState<Guid>(
-    Guid.createEmpty()
-  );
+  const [selectedActivityId, setSelectedActivityId] =
+    React.useState<string>("");
   const { notify } = useToastNotify();
   const theme = useTheme();
 
@@ -101,7 +97,7 @@ export const ActivitiesPage: React.FC = (props) => {
     }
   };
 
-  const deleteActivityButtonClickHandler = (activityId: Guid) => {
+  const deleteActivityButtonClickHandler = (activityId: string) => {
     setSelectedActivityId(activityId);
     setOpenDeleteWarningDialog(true);
   };

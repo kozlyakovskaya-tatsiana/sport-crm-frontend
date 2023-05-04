@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
-import { Guid } from "guid-typescript";
 import {
   CreatePlaygroundForm,
   CreateSportPlaygroundFormValues,
@@ -56,7 +55,7 @@ export const SportPlaygroundsPage: React.FC = (props) => {
     }
   };
 
-  const onDeleteSportPlaygroundClick = async (id: Guid) => {
+  const onDeleteSportPlaygroundClick = async (id: string) => {
     try {
       const response = await sportPlaygroundsService.deleteSportPlayground(id);
       response.data && refreshSportPlaygrounds();

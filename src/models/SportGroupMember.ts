@@ -1,4 +1,3 @@
-import { Guid } from "guid-typescript";
 import { SportGroup } from "./SportGroup";
 import { BaseEntity } from "./BaseEntity";
 
@@ -7,5 +6,5 @@ export interface SportGroupMember extends BaseEntity {
   lastName: string;
   mobilePhoneNumber: string;
   sportGroup: SportGroup;
-  sportGroupId: Guid;
+  sportGroupId: string;
 }

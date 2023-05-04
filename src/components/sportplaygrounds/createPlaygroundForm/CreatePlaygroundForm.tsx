@@ -7,7 +7,6 @@ import {
   useTheme,
 } from "@mui/material";
 import * as Yup from "yup";
-import { Guid } from "guid-typescript";
 import { useFormik } from "formik";
 import {
   RoundedButton,
@@ -20,7 +19,7 @@ import { useToastNotify } from "../../../contexts/NotificationToastContext";
 
 export interface CreateSportPlaygroundFormValues {
   name: string;
-  activitiesIds: Guid[];
+  activitiesIds: string[];
   base64Image: string;
 }
 const initialValues: CreateSportPlaygroundFormValues = {

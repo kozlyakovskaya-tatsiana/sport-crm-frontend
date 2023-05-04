@@ -1,8 +1,6 @@
 import { AxiosResponse } from "axios";
-import { CreateTenantRequest } from "../tenants/requests/CreateTenantRequest";
 import selfFitAxios from "../../axios/selfFitAxios";
-import { SPORT_GROUPS_API, TENANTS_API } from "../endpoints";
-import { Tenant } from "../../models/Tenant";
+import { SPORT_GROUPS_API } from "../endpoints";
 import { CreateSportGroupRequest } from "./requests/CreateSportGroupRequest";
 
 export async function createSportGroup(

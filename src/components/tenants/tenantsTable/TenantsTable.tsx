@@ -12,11 +12,6 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Guid } from "guid-typescript";
-import moment from "moment";
-import { Currency } from "../../../Currency";
-import { useAuth } from "../../../contexts/AuthContext";
-import { SportActivity } from "../../../models/SportActivity";
 import { StyledTableCell } from "../../../styledComponents/styledComponents";
 import { NoDataToDisplay } from "../../NoDataToDisplay";
 import { Tenant } from "../../../models/Tenant";

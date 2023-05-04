@@ -1,4 +1,3 @@
-import { Guid } from "guid-typescript";
 import { AxiosResponse } from "axios";
 import { CreateSportPlaygroundRequest } from "./requests/CreateSportPlaygroundRequest";
 import selfFitAxios from "../../axios/selfFitAxios";
@@ -15,7 +14,7 @@ const getSportPlaygrounds = async (): Promise<
 > => selfFitAxios.get<SportPlayground[]>(SPORT_PLAYGROUNDS_API);
 
 const deleteSportPlayground = async (
-  id: Guid
+  id: string
 ): Promise<AxiosResponse<boolean>> =>
   selfFitAxios.delete<boolean>(`${SPORT_PLAYGROUNDS_API}/${id}`);
 

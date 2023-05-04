@@ -10,7 +10,6 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { Guid } from "guid-typescript";
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import { FieldArray, Form, Formik } from "formik";
 import AddIcon from "@mui/icons-material/Add";
@@ -24,8 +23,8 @@ import {
 
 export interface SportGroupFormProps {
   onSubmit: (values: SportGroupFormValues) => void;
-  activities: { name: string; id: Guid }[];
-  tenants: { name: string; id: Guid }[];
+  activities: { name: string; id: string }[];
+  tenants: { name: string; id: string }[];
 }
 export interface SportGroupFormValues {
   groupName: string;

@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Guid } from "guid-typescript";
 import { Currency } from "../../../Currency";
 import { useAuth } from "../../../contexts/AuthContext";
 import { SportActivity } from "../../../models/SportActivity";
@@ -24,7 +23,7 @@ const adminTableHeaders = [...instructorsTableHeaders, "", ""];
 
 export interface ActivitiesTableProps {
   activities: SportActivity[];
-  onDeleteActivityButtonClick: (activityId: Guid) => void;
+  onDeleteActivityButtonClick: (activityId: string) => void;
 }
 export const ActivitiesTable: React.FC<ActivitiesTableProps> = (props) => {
   const { isAdmin } = useAuth();

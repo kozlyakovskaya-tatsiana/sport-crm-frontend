@@ -1,30 +1,6 @@
 import React from "react";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Alert,
-  Box,
-  Button,
-  Dialog,
-  Grid,
-  IconButton,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Grid, IconButton, Typography, useTheme } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
-import { Guid } from "guid-typescript";
 import { DialogWrapperWithCrossButton } from "../../components/DialogWrapperWithCrossButton";
 import {
   SportGroupForm,
