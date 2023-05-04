@@ -13,21 +13,27 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Guid } from "guid-typescript";
+import moment from "moment";
 import { Currency } from "../../../Currency";
 import { useAuth } from "../../../contexts/AuthContext";
 import { SportActivity } from "../../../models/SportActivity";
 import { StyledTableCell } from "../../../styledComponents/styledComponents";
 import { NoDataToDisplay } from "../../NoDataToDisplay";
+import { Tenant } from "../../../models/Tenant";
 
-const instructorsTableHeaders = ["Activity", "Cost per hour", "Groups"];
-const adminTableHeaders = [...instructorsTableHeaders, "", ""];
+const tenantTableHeaders = [
+  "Name",
+  "Contract Start Date",
+  "Contract End Date",
+  "Groups",
+  "",
+  "",
+];
 
-export interface ActivitiesTableProps {
-  activities: SportActivity[];
-  onDeleteActivityButtonClick: (activityId: Guid) => void;
+export interface TenantsTableProps {
+  tenants: Tenant[];
 }
-export const ActivitiesTable: React.FC<ActivitiesTableProps> = (props) => {
-  const { isAdmin } = useAuth();
+export const TenantsTable: React.FC<TenantsTableProps> = (props) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -43,58 +49,54 @@ export const ActivitiesTable: React.FC<ActivitiesTableProps> = (props) => {
 
   return (
     <>
-      {props.activities?.length ? (
+      {props.tenants?.length ? (
         <>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 750 }}>
               <TableHead>
                 <TableRow>
-                  {(!isAdmin
-                    ? adminTableHeaders
-                    : instructorsTableHeaders
-                  )?.map((name) => (
+                  {tenantTableHeaders.map((name) => (
                     <StyledTableCell>{name}</StyledTableCell>
                   ))}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {props.activities
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  ?.map((activity, index) => (
+                {props.tenants
+                  ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  ?.map((tenant, index) => (
                     <TableRow
-                      key={activity.name + index.toString()}
+                      key={tenant?.name + index.toString()}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <StyledTableCell component="th" scope="row">
-                        {activity.name}
+                        {tenant?.name}
                       </StyledTableCell>
-                      <StyledTableCell align="left">{`${activity.costPerHourInByn} ${Currency.BYN}`}</StyledTableCell>
+                      <StyledTableCell align="left">{`${new Date(
+                        tenant?.contract?.startDate
+                      ).toLocaleDateString()} `}</StyledTableCell>
+                      <StyledTableCell align="left">{`${new Date(
+                        tenant?.contract?.endDate
+                      ).toLocaleDateString()} `}</StyledTableCell>
                       <StyledTableCell align="left">
-                        {activity.sportGroups.length}
+                        {tenant?.sportGroups?.length}
                       </StyledTableCell>
-                      {!isAdmin && (
-                        <>
-                          <StyledTableCell align="left">
-                            <Button size="small" variant="contained" disabled>
-                              <EditIcon fontSize="small" />
-                              Edit
-                            </Button>
-                          </StyledTableCell>
-                          <StyledTableCell align="left">
-                            <Button
-                              size="small"
-                              variant="contained"
-                              color="error"
-                              onClick={() =>
-                                props.onDeleteActivityButtonClick(activity.id)
-                              }
-                            >
-                              <DeleteIcon fontSize="small" />
-                              Remove
-                            </Button>
-                          </StyledTableCell>
-                        </>
-                      )}
+                      <StyledTableCell align="left">
+                        <Button size="small" variant="contained" disabled>
+                          <EditIcon fontSize="small" />
+                          Edit
+                        </Button>
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="error"
+                          disabled
+                        >
+                          <DeleteIcon fontSize="small" />
+                          Remove
+                        </Button>
+                      </StyledTableCell>
                     </TableRow>
                   ))}
               </TableBody>
@@ -103,7 +105,7 @@ export const ActivitiesTable: React.FC<ActivitiesTableProps> = (props) => {
           <TablePagination
             rowsPerPageOptions={[5, 10]}
             component="div"
-            count={props.activities.length}
+            count={props.tenants?.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

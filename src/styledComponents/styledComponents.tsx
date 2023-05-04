@@ -27,6 +27,14 @@ export const RoundedSelect = styled(Select)({
   },
 });
 
+// export const RoundedDatePicker = styled(DatePicker)({
+//   "&.MuiInputBase-input-MuiOutlinedInput-input": {
+//     borderRadius: "20px",
+//   },
+//   borderColor: "red",
+//   borderRadius: "25px",
+// });
+
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.primary.main,

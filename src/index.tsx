@@ -3,6 +3,8 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { ThemeProvider } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import theme from "./theme";
 import reportWebVitals from "./reportWebVitals";
 import { AuthenticationProvider } from "./contexts/AuthContext";
@@ -15,17 +17,19 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <NotificationToastProvider>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <AuthenticationProvider>
-            <WithAxios>
-              <App />
-            </WithAxios>
-          </AuthenticationProvider>
-        </BrowserRouter>
-      </ThemeProvider>
-    </NotificationToastProvider>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
+      <NotificationToastProvider>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <AuthenticationProvider>
+              <WithAxios>
+                <App />
+              </WithAxios>
+            </AuthenticationProvider>
+          </BrowserRouter>
+        </ThemeProvider>
+      </NotificationToastProvider>
+    </LocalizationProvider>
   </React.StrictMode>
 );
 

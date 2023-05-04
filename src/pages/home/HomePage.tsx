@@ -6,6 +6,7 @@ import SportsVolleyballIcon from "@mui/icons-material/SportsVolleyball";
 import MapIcon from "@mui/icons-material/Map";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
+import BusinessIcon from "@mui/icons-material/Business";
 import { useNavigate } from "react-router-dom";
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
 import {
@@ -16,6 +17,7 @@ import {
   ACTIVITIES_ROUTE,
   GROUPS_ROUTE,
   SPORT_PLAYGROUNDS_ROUTE,
+  TENANTS_ROUTE,
   USERS_MANAGEMENT_ROUTE,
 } from "../../consts/routes";
 
@@ -54,6 +56,11 @@ export const HomePage: React.FC = () => {
       title: "Playgrounds",
       image: <MapIcon sx={baseSxPropsForIcons} />,
       onClick: () => navigate(SPORT_PLAYGROUNDS_ROUTE),
+    },
+    {
+      title: "Tenants",
+      image: <BusinessIcon sx={baseSxPropsForIcons} />,
+      onClick: () => navigate(TENANTS_ROUTE),
     },
   ];
 

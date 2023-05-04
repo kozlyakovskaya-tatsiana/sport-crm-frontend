@@ -8,6 +8,7 @@ import {
   Button,
   Dialog,
   Grid,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -16,16 +17,25 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useTheme,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
+import { Guid } from "guid-typescript";
 import { DialogWrapperWithCrossButton } from "../../components/DialogWrapperWithCrossButton";
-import { SportGroupForm } from "../../components/sportGroups/SportGroupForm";
+import {
+  SportGroupForm,
+  SportGroupFormValues,
+} from "../../components/sportGroups/SportGroupForm";
 import { SportActivity } from "../../models/SportActivity";
 import { sportActivitiesService } from "../../api/activities/activitiyService";
+import { Tenant } from "../../models/Tenant";
+import { tenantsService } from "../../api/tenants/tenantService";
+import { CreateSportGroupRequest } from "../../api/sportGroups/requests/CreateSportGroupRequest";
+import { sportGroupService } from "../../api/sportGroups/sportGroupService";
 
 export const GroupsPage: React.FC = (props) => {
   const [isGroupModalDialogOpen, setIsGroupModalDialogOpen] =
@@ -33,9 +43,13 @@ export const GroupsPage: React.FC = (props) => {
   const [sportActivities, setSportActivities] = React.useState<SportActivity[]>(
     []
   );
+  const [tenants, setTenants] = React.useState<Tenant[]>([]);
+
+  const theme = useTheme();
 
   React.useEffect(() => {
     loadSportActivities();
+    loadTenants();
   }, []);
 
   const loadSportActivities = () => {
@@ -44,52 +58,27 @@ export const GroupsPage: React.FC = (props) => {
     });
   };
 
-  const groupsData: {
-    name: string;
-    members: string[];
-    activity: string;
-    company?: string;
-  }[] = [
-    {
-      name: "Godel Volleyball",
-      members: [
-        "Bogdan Khakimov",
-        "Andrej Andreev",
-        "Victor Victorov",
-        "Denis Ivanov",
-        "Alex Sidorov",
-        "Boris Bagadov",
-      ],
-      activity: "Football",
-    },
-    {
-      name: "iTechart Basketball",
-      members: [
-        "Bernadette Carlson",
-        "Sylvia Rowe",
-        "Heidi Moss",
-        "Lucas Wagner",
-        "Lorenzo Peterson",
-        "Barbara Garner",
-        "Robin Gross",
-        "Bradford Hughes",
-        "Anna Brewer",
-        "Nadine Garrett",
-      ],
-      activity: "Basketball",
-    },
-    {
-      name: "OblGaz FootBall",
-      members: [
-        "Boris Bagadov",
-        "Bradford Hughes",
-        "Anna Brewer",
-        "Nadine Garrett",
-      ],
-      activity: "Volleyball",
-    },
-  ];
-  const groupTableHeaders: string[] = ["Name", "Phone number"];
+  const loadTenants = () => {
+    tenantsService.getTenants().then((response) => {
+      setTenants(response.data);
+    });
+  };
+
+  const onCreateSportGroupSubmit = (values: SportGroupFormValues) => {
+    const body: CreateSportGroupRequest = {
+      activityId: values.activityId,
+      members: values.members?.map((m) => ({
+        name: m.name,
+        mobilePhoneNumber: m.phoneNumber,
+      })),
+      name: values.groupName,
+      tenantId: values.tenantId,
+    };
+    console.log(body);
+    sportGroupService.createSportGroup(body).then((response) => {
+      console.log(response);
+    });
+  };
 
   const renderGroupFormDialog = () => (
     <DialogWrapperWithCrossButton
@@ -101,6 +90,11 @@ export const GroupsPage: React.FC = (props) => {
           name: sportActivity.name,
           id: sportActivity.id,
         }))}
+        tenants={tenants?.map((tenant) => ({
+          name: tenant?.name,
+          id: tenant?.id,
+        }))}
+        onSubmit={onCreateSportGroupSubmit}
       />
     </DialogWrapperWithCrossButton>
   );
@@ -113,13 +107,12 @@ export const GroupsPage: React.FC = (props) => {
       <Grid container sx={{ paddingTop: "2%", paddingBottom: "1%" }}>
         <Grid item xs={3} />
         <Grid item xs={6}>
-          <Button
-            variant="contained"
+          <IconButton
             onClick={() => setIsGroupModalDialogOpen(true)}
+            sx={{ color: theme.palette.primary.main }}
           >
-            <AddIcon />
-            Add new
-          </Button>
+            <AddIcon fontSize="large" />
+          </IconButton>
         </Grid>
         <Grid item xs={3} />
       </Grid>

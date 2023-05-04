@@ -7,6 +7,7 @@ import {
   GROUPS_ROUTE,
   LOGIN_ROUTE,
   SPORT_PLAYGROUNDS_ROUTE,
+  TENANTS_ROUTE,
   USERS_MANAGEMENT_ROUTE,
 } from "./consts/routes";
 import { BaseLayout } from "./layouts/baseLayout/BaseLayout";
@@ -18,6 +19,7 @@ import { useAuth } from "./contexts/AuthContext";
 import { ActivitiesPage } from "./pages/activities/ActivitiesPage";
 import { GroupsPage } from "./pages/groups/GroupsPage";
 import { SportPlaygroundsPage } from "./pages/sportplaygrounds/SportPlaygroundsPage";
+import { TenantsPage } from "./pages/tenants/TenantsPage";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -50,6 +52,10 @@ function App() {
         {
           path: SPORT_PLAYGROUNDS_ROUTE,
           element: <SportPlaygroundsPage />,
+        },
+        {
+          path: TENANTS_ROUTE,
+          element: <TenantsPage />,
         },
       ],
     },

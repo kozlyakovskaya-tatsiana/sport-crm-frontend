@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Guid } from "guid-typescript";
 import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
-import { Field, FieldArray, Form, Formik } from "formik";
+import { FieldArray, Form, Formik } from "formik";
 import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
 import { object, string, array } from "yup";
@@ -23,22 +23,25 @@ import {
 } from "../../styledComponents/styledComponents";
 
 export interface SportGroupFormProps {
-  // onSubmit?: () => void;
-  // eslint-disable-next-line react/no-unused-prop-types
+  onSubmit: (values: SportGroupFormValues) => void;
   activities: { name: string; id: Guid }[];
+  tenants: { name: string; id: Guid }[];
 }
 export interface SportGroupFormValues {
   groupName: string;
   activityId: string;
-  members: { name: string; phoneNumber: string }[];
+  tenantId: string;
+  members: { name: string; phoneNumber: string; id: string }[];
 }
 const initialFormValues: SportGroupFormValues = {
-  members: [{ name: "", phoneNumber: "" }],
+  members: [{ name: "", phoneNumber: "", id: generateUniqueID() }],
   activityId: "",
+  tenantId: "",
   groupName: "",
 };
 const validationFormGroupSchema = object().shape({
   activityId: string().required("Required"),
+  tenantId: string().required("Required"),
   groupName: string().required("Required"),
   members: array().of(
     object({
@@ -48,10 +51,8 @@ const validationFormGroupSchema = object().shape({
   ),
 });
 export const SportGroupForm: React.FC<SportGroupFormProps> = (props) => {
-  const [inputs, memberInputs] = React.useState<number>(1);
   const theme = useTheme();
 
-  console.log("render");
   return (
     <Box>
       <Grid container direction="row" spacing={1} width="100%">
@@ -70,102 +71,149 @@ export const SportGroupForm: React.FC<SportGroupFormProps> = (props) => {
         <Grid item md={10} xs={10} lg={10}>
           <Formik
             initialValues={initialFormValues}
-            // validationSchema={validationFormGroupSchema}
-            onSubmit={(values) => console.log(values)}
+            validationSchema={validationFormGroupSchema}
+            onSubmit={props.onSubmit}
           >
             {({ values, handleChange, errors, touched }) => (
               <Form>
-                {/* <RoundedTextField */}
-                {/*  fullWidth */}
-                {/*  label="Name" */}
-                {/*  variant="outlined" */}
-                {/*  name="groupName" */}
-                {/*  value={values.groupName} */}
-                {/*  onChange={handleChange} */}
-                {/*  error={touched.groupName && !!errors.groupName} */}
-                {/*  helperText={touched.groupName && errors.groupName} */}
-                {/* /> */}
-                {/* <FormControl fullWidth> */}
-                {/*  <InputLabel id="demo-simple-select-label"> */}
-                {/*    Activity */}
-                {/*  </InputLabel> */}
-                {/*  <RoundedSelect */}
-                {/*    value={values.activityId} */}
-                {/*    name="activityId" */}
-                {/*    label="Activity" */}
-                {/*    onChange={handleChange} */}
-                {/*    error={touched.activityId && !!errors.activityId} */}
-                {/*  > */}
-                {/*    {props.activities?.map((activity) => ( */}
-                {/*      <MenuItem */}
-                {/*        value={activity.id.toString()} */}
-                {/*        key={activity.id.toString()} */}
-                {/*      > */}
-                {/*        {activity.name} */}
-                {/*      </MenuItem> */}
-                {/*    ))} */}
-                {/*  </RoundedSelect> */}
-                {/*  <Typography */}
-                {/*    color={theme.palette.error.main} */}
-                {/*    fontSize={12} */}
-                {/*    margin="3px 14px 0px 14px " */}
-                {/*  > */}
-                {/*    {touched.activityId && errors.activityId} */}
-                {/*  </Typography> */}
-                {/* </FormControl> */}
-                {/* <FormControl fullWidth margin="normal"> */}
-                {/*  <InputLabel>Company</InputLabel> */}
-                {/*  <RoundedSelect */}
-                {/*    value={value} */}
-                {/*    label="Activity" */}
-                {/*    onChange={(e) => setValue2(e.target.value as string)} */}
-                {/*  > */}
-                {/*    {props.activities?.map((activity) => ( */}
-                {/*      <MenuItem value={activity.id.toString()}> */}
-                {/*        {activity.name} */}
-                {/*      </MenuItem> */}
-                {/*    ))} */}
-                {/*  </RoundedSelect> */}
-                {/* </FormControl> */}
+                <RoundedTextField
+                  fullWidth
+                  label="Name"
+                  variant="outlined"
+                  name="groupName"
+                  value={values.groupName}
+                  onChange={handleChange}
+                  error={touched.groupName && !!errors.groupName}
+                  helperText={touched.groupName && errors.groupName}
+                />
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Activity
+                  </InputLabel>
+                  <RoundedSelect
+                    value={values.activityId}
+                    name="activityId"
+                    label="Activity"
+                    onChange={handleChange}
+                    error={touched.activityId && !!errors.activityId}
+                  >
+                    {props.activities?.map((activity) => (
+                      <MenuItem
+                        value={activity.id.toString()}
+                        key={activity.id.toString()}
+                      >
+                        {activity.name}
+                      </MenuItem>
+                    ))}
+                  </RoundedSelect>
+                  <Typography
+                    color={theme.palette.error.main}
+                    fontSize={12}
+                    margin="3px 14px 0px 14px "
+                  >
+                    {touched.activityId && errors.activityId}
+                  </Typography>
+                </FormControl>
+                <FormControl fullWidth margin="normal">
+                  <InputLabel>Company</InputLabel>
+                  <RoundedSelect
+                    name="tenantId"
+                    value={values.tenantId}
+                    label="Company"
+                    onChange={handleChange}
+                    error={touched.tenantId && !!errors.tenantId}
+                  >
+                    {props.tenants?.map((tenant) => (
+                      <MenuItem value={tenant?.id.toString()}>
+                        {tenant?.name}
+                      </MenuItem>
+                    ))}
+                  </RoundedSelect>
+                  <Typography
+                    color={theme.palette.error.main}
+                    fontSize={12}
+                    margin="3px 14px 0px 14px "
+                  >
+                    {touched.tenantId && errors.tenantId}
+                  </Typography>
+                </FormControl>
                 <FieldArray name="members">
-                  {({ insert, remove, push }) => (
-                    <div>
-                      {values.members?.length > 0 &&
-                        values.members.map((members, index) => (
-                          <div className="row" key={generateUniqueID()}>
-                            <div className="col">
-                              <input
-                                name={`members.${index}.name`}
-                                value={values.members[index].name}
-                                onChange={handleChange}
-                              />
-                            </div>
-                            <div className="col">
-                              <Field
-                                name={`members.${index}.phoneNumber`}
-                                placeholder="jane@acme.com"
-                                type="email"
-                              />
-                            </div>
-                            {/* <div className="col"> */}
-                            {/*  <button */}
-                            {/*    type="button" */}
-                            {/*    className="secondary" */}
-                            {/*    onClick={() => remove(index)} */}
-                            {/*  > */}
-                            {/*    X */}
-                            {/*  </button> */}
-                            {/* </div> */}
-                          </div>
-                        ))}
-                      {/* <button */}
-                      {/*  type="button" */}
-                      {/*  className="secondary" */}
-                      {/*  onClick={() => push({ name: "", email: "" })} */}
-                      {/* > */}
-                      {/*  Add members */}
-                      {/* </button> */}
-                    </div>
+                  {(arrayHelpers) => (
+                    <>
+                      {values.members?.map((member, index) => (
+                        <Grid
+                          item
+                          container
+                          spacing={1}
+                          alignItems="center"
+                          key={member.id}
+                        >
+                          <Grid item xs={6} sm={6} md={6} lg={6}>
+                            <RoundedTextField
+                              label="Name"
+                              name={`members[${index}].name`}
+                              fullWidth
+                              value={values.members[index]?.name}
+                              onChange={handleChange}
+                              error={
+                                touched.members?.[index]?.name &&
+                                !!(
+                                  errors.members?.[index] as {
+                                    name: string;
+                                    phoneNumber: string;
+                                  }
+                                )?.name
+                              }
+                            />
+                          </Grid>
+                          <Grid item xs={5} sm={5} md={5} lg={5}>
+                            <RoundedTextField
+                              label="Phone"
+                              name={`members[${index}].phoneNumber`}
+                              fullWidth
+                              value={values.members[index]?.phoneNumber}
+                              onChange={handleChange}
+                            />
+                          </Grid>
+                          <Grid item xs={1} sm={1} md={1} lg={1}>
+                            <IconButton
+                              onClick={() => arrayHelpers.remove(index)}
+                              sx={{ color: theme.palette.primary.main }}
+                            >
+                              <ClearIcon fontSize="large" />
+                            </IconButton>
+                          </Grid>
+                        </Grid>
+                      ))}
+                      <Grid
+                        item
+                        container
+                        spacing={1}
+                        alignItems="center"
+                        key={generateUniqueID()}
+                        paddingTop="2%"
+                        paddingBottom="2%"
+                      >
+                        <Grid item xs={4} sm={4} md={4} lg={4} />
+                        <Grid item xs={4} sm={4} md={4} lg={4}>
+                          <Button
+                            variant="contained"
+                            fullWidth
+                            endIcon={<AddIcon />}
+                            onClick={() =>
+                              arrayHelpers.push({
+                                name: "",
+                                phoneNumber: "",
+                                id: generateUniqueID(),
+                              })
+                            }
+                          >
+                            Add member
+                          </Button>
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4} lg={4} />
+                      </Grid>
+                    </>
                   )}
                 </FieldArray>
                 <RoundedButton

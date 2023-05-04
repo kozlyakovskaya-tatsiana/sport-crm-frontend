@@ -30,6 +30,7 @@ import AssessmentIcon from "@mui/icons-material/Assessment";
 import PeopleIcon from "@mui/icons-material/People";
 import HomeIcon from "@mui/icons-material/Home";
 import MapIcon from "@mui/icons-material/Map";
+import BusinessIcon from "@mui/icons-material/Business";
 import { SectionCardProps } from "../../components/cards/SimpleCard";
 import {
   ACTIVITIES_ROUTE,
@@ -37,6 +38,7 @@ import {
   HOME_ROUTE,
   LOGIN_ROUTE,
   SPORT_PLAYGROUNDS_ROUTE,
+  TENANTS_ROUTE,
   USERS_MANAGEMENT_ROUTE,
 } from "../../consts/routes";
 import authService from "../../api/authentication/authService";
@@ -86,6 +88,11 @@ export const BaseLayout: React.FC = () => {
       title: "Playgrounds",
       image: <MapIcon sx={baseSxPropsForIcons} />,
       onClick: () => navigate(SPORT_PLAYGROUNDS_ROUTE),
+    },
+    {
+      title: "Tenants",
+      image: <BusinessIcon sx={baseSxPropsForIcons} />,
+      onClick: () => navigate(TENANTS_ROUTE),
     },
   ];
 
