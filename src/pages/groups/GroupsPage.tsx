@@ -1,6 +1,27 @@
 import React from "react";
-import { Grid, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Alert,
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { DialogWrapperWithCrossButton } from "../../components/DialogWrapperWithCrossButton";
 import {
   SportGroupForm,
@@ -12,6 +33,10 @@ import { Tenant } from "../../models/Tenant";
 import { tenantsService } from "../../api/tenants/tenantService";
 import { CreateSportGroupRequest } from "../../api/sportGroups/requests/CreateSportGroupRequest";
 import { sportGroupService } from "../../api/sportGroups/sportGroupService";
+import { SportGroup } from "../../models/SportGroup";
+import { SportGroupView } from "../../api/sportGroups/viewModels/SportGroupView";
+
+const membersTableHeaders = ["Name", "Phone number"];
 
 export const GroupsPage: React.FC = (props) => {
   const [isGroupModalDialogOpen, setIsGroupModalDialogOpen] =
@@ -20,13 +45,21 @@ export const GroupsPage: React.FC = (props) => {
     []
   );
   const [tenants, setTenants] = React.useState<Tenant[]>([]);
+  const [sportGroups, setSportGroups] = React.useState<SportGroupView[]>([]);
 
   const theme = useTheme();
 
   React.useEffect(() => {
+    loadSportGroups();
     loadSportActivities();
     loadTenants();
   }, []);
+
+  const loadSportGroups = () => {
+    sportGroupService.getSportGroups().then((response) => {
+      setSportGroups(response.data);
+    });
+  };
 
   const loadSportActivities = () => {
     sportActivitiesService.getActivities().then((response) => {
@@ -50,9 +83,9 @@ export const GroupsPage: React.FC = (props) => {
       name: values.groupName,
       tenantId: values.tenantId,
     };
-    console.log(body);
     sportGroupService.createSportGroup(body).then((response) => {
-      console.log(response);
+      setIsGroupModalDialogOpen(false);
+      loadSportGroups();
     });
   };
 
@@ -93,111 +126,117 @@ export const GroupsPage: React.FC = (props) => {
         <Grid item xs={3} />
       </Grid>
 
-      {/* <Grid container> */}
-      {/*  <Grid item xs={3} /> */}
-      {/*  <Grid item xs={6}> */}
-      {/*    {groupsData.map((groupData) => ( */}
-      {/*      <Accordion */}
-      {/*        sx={{ width: "100%", minWidth: "750px" }} */}
-      {/*        key={generateUniqueID()} */}
-      {/*      > */}
-      {/*        <AccordionSummary */}
-      {/*          expandIcon={<ExpandMoreIcon />} */}
-      {/*          aria-controls="panel1a-content" */}
-      {/*          id="panel1a-header" */}
-      {/*        > */}
-      {/*          <Typography>{groupData.name}</Typography> */}
-      {/*        </AccordionSummary> */}
-      {/*        <AccordionDetails> */}
-      {/*          <Alert */}
-      {/*            severity="info" */}
-      {/*            sx={{ */}
-      {/*              marginBottom: "1em", */}
-      {/*              ".MuiAlert-message": { */}
-      {/*                width: "100%", */}
-      {/*              }, */}
-      {/*            }} */}
-      {/*          > */}
-      {/*            <div */}
-      {/*              style={{ display: "flex", justifyContent: "space-between" }} */}
-      {/*            > */}
-      {/*              <div style={{ display: "flex" }}> */}
-      {/*                <Typography> */}
-      {/*                  <strong>Company: </strong> OblGaz */}
-      {/*                </Typography> */}
-      {/*              </div> */}
-      {/*              <div style={{ display: "flex" }}> */}
-      {/*                <Typography> */}
-      {/*                  <strong>Activity:</strong> */}
-      {/*                  {groupData.activity} */}
-      {/*                </Typography> */}
-      {/*              </div> */}
-      {/*              <div style={{ display: "flex" }}> */}
-      {/*                <Typography> */}
-      {/*                  <strong>Contract:</strong> 1 March 2022 - 20 December */}
-      {/*                  2022 */}
-      {/*                </Typography> */}
-      {/*              </div> */}
-      {/*            </div> */}
-      {/*          </Alert> */}
-      {/*          <TableContainer component={Paper}> */}
-      {/*            <Table */}
-      {/*              sx={{ minWidth: "300px" }} */}
-      {/*              size="small" */}
-      {/*              aria-label="a dense table" */}
-      {/*            > */}
-      {/*              <TableHead> */}
-      {/*                <TableRow> */}
-      {/*                  {groupTableHeaders.map((header) => ( */}
-      {/*                    <TableCell>{header}</TableCell> */}
-      {/*                  ))} */}
-      {/*                </TableRow> */}
-      {/*              </TableHead> */}
-      {/*              <TableBody> */}
-      {/*                {groupData.members.map((member, index) => ( */}
-      {/*                  <TableRow */}
-      {/*                    key={member} */}
-      {/*                    sx={{ */}
-      {/*                      "&:last-child td, &:last-child th": { border: 0 }, */}
-      {/*                    }} */}
-      {/*                  > */}
-      {/*                    <TableCell component="th" scope="row"> */}
-      {/*                      {member} */}
-      {/*                    </TableCell> */}
-      {/*                    <TableCell align="left"> */}
-      {/*                      {index === 0 && "+37533xxxxxxxx"} */}
-      {/*                    </TableCell> */}
-      {/*                  </TableRow> */}
-      {/*                ))} */}
-      {/*              </TableBody> */}
-      {/*            </Table> */}
-      {/*          </TableContainer> */}
-      {/*          <Box */}
-      {/*            sx={{ */}
-      {/*              display: "flex", */}
-      {/*              justifyContent: "end", */}
-      {/*              paddingTop: "3%", */}
-      {/*            }} */}
-      {/*          > */}
-      {/*            <Button */}
-      {/*              size="small" */}
-      {/*              variant="contained" */}
-      {/*              sx={{ marginRight: "2%" }} */}
-      {/*            > */}
-      {/*              <EditIcon fontSize="small" /> */}
-      {/*              Edit */}
-      {/*            </Button> */}
-      {/*            <Button size="small" variant="contained" color="error"> */}
-      {/*              <DeleteIcon fontSize="small" /> */}
-      {/*              Remove */}
-      {/*            </Button> */}
-      {/*          </Box> */}
-      {/*        </AccordionDetails> */}
-      {/*      </Accordion> */}
-      {/*    ))} */}
-      {/*  </Grid> */}
-      {/*  <Grid item xs={3} /> */}
-      {/* </Grid> */}
+      <Grid container>
+        <Grid item xs={3} />
+        <Grid item xs={6}>
+          {sportGroups?.map((group) => (
+            <Accordion
+              sx={{ width: "100%", minWidth: "750px" }}
+              key={group?.id}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>{group?.name}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Alert
+                  severity="info"
+                  sx={{
+                    marginBottom: "1em",
+                    ".MuiAlert-message": {
+                      width: "100%",
+                    },
+                  }}
+                >
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <div style={{ display: "flex" }}>
+                      <Typography>
+                        <strong>Company: </strong> {group?.tenant?.name}
+                      </Typography>
+                    </div>
+                    <div style={{ display: "flex" }}>
+                      <Typography>
+                        <strong>Activity:</strong>
+                        {group?.sportActivity?.name}
+                      </Typography>
+                    </div>
+                    <div style={{ display: "flex" }}>
+                      <Typography>
+                        <strong>Contract:</strong>{" "}
+                        {new Date(
+                          group?.tenant?.contract?.startDate
+                        )?.toLocaleDateString()}
+                        -
+                        {new Date(
+                          group?.tenant?.contract?.endDate
+                        )?.toLocaleDateString()}
+                      </Typography>
+                    </div>
+                  </div>
+                </Alert>
+                <TableContainer component={Paper}>
+                  <Table
+                    sx={{ minWidth: "300px" }}
+                    size="small"
+                    aria-label="a dense table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        {membersTableHeaders.map((header) => (
+                          <TableCell>{header}</TableCell>
+                        ))}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {group?.members?.map((member, index) => (
+                        <TableRow
+                          key={member?.id}
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                        >
+                          <TableCell component="th" scope="row">
+                            {member?.name}
+                          </TableCell>
+                          <TableCell align="left">
+                            {member?.mobilePhoneNumber}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "end",
+                    paddingTop: "3%",
+                  }}
+                >
+                  <Button
+                    size="small"
+                    variant="contained"
+                    sx={{ marginRight: "2%" }}
+                  >
+                    <EditIcon fontSize="small" />
+                    Edit
+                  </Button>
+                  <Button size="small" variant="contained" color="error">
+                    <DeleteIcon fontSize="small" />
+                    Remove
+                  </Button>
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </Grid>
+        <Grid item xs={3} />
+      </Grid>
       {renderGroupFormDialog()}
     </>
   );

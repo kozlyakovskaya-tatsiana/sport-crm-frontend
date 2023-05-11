@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Drawer,
-  IconButton,
   List,
   ListItem,
   ListItemButton,
@@ -15,14 +14,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import {
-  NavLink,
-  Outlet,
-  redirect,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
-import MenuIcon from "@mui/icons-material/Menu";
+import { Outlet, redirect, useNavigate } from "react-router-dom";
 import TodayIcon from "@mui/icons-material/Today";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
 import SportsVolleyballIcon from "@mui/icons-material/SportsVolleyball";
@@ -44,11 +36,10 @@ import {
 import authService from "../../api/authentication/authService";
 import { useAuth } from "../../contexts/AuthContext";
 
+const drawerWidth = 260;
 export const BaseLayout: React.FC = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
   const theme = useTheme();
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const { refreshAuthInfo } = useAuth();
   const baseSxPropsForIcons: SxProps = {
     color: theme.palette.primary.main,
@@ -97,14 +88,9 @@ export const BaseLayout: React.FC = () => {
   ];
 
   const menuList = () => (
-    <Box
-      sx={{ width: 250 }}
-      role="presentation"
-      onClick={() => setIsDrawerOpen(false)}
-      onKeyDown={() => setIsDrawerOpen(false)}
-    >
+    <Box sx={{ overflow: "auto" }}>
       <List>
-        {sectionCards.map((section, index) => (
+        {sectionCards.map((section) => (
           <ListItem
             key={section.title}
             disablePadding
@@ -121,55 +107,53 @@ export const BaseLayout: React.FC = () => {
   );
 
   return (
-    <>
-      <Box>
-        <AppBar position="static">
-          <Toolbar>
-            {pathname !== HOME_ROUTE && (
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={() => setIsDrawerOpen(true)}
-                sx={{ mr: 2 }}
-              >
-                <MenuIcon
-                  sx={{ color: theme.palette.common.white, fontSize: "1.5em" }}
-                />
-              </IconButton>
-            )}
-            <NavLink
-              to={HOME_ROUTE}
-              style={{ flexGrow: 1, textDecoration: "none" }}
-            >
-              <Typography
-                variant="h4"
-                sx={{ color: theme.palette.common.white }}
-              >
-                SelfFit
-              </Typography>
-            </NavLink>
-            <Button
-              sx={{ color: theme.palette.common.white }}
-              onClick={() => {
-                authService.signOut();
-                refreshAuthInfo();
-                redirect(LOGIN_ROUTE);
-              }}
-            >
-              Logout
-            </Button>
-          </Toolbar>
-        </AppBar>
+    <Box sx={{ display: "flex" }}>
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <Toolbar>
+          <Typography
+            variant="h4"
+            sx={{
+              color: theme.palette.common.white,
+              flexGrow: 1,
+              textDecoration: "none",
+            }}
+          >
+            SelfFit
+          </Typography>
+          <Button
+            sx={{ color: theme.palette.common.white }}
+            onClick={() => {
+              authService.signOut();
+              refreshAuthInfo();
+              redirect(LOGIN_ROUTE);
+            }}
+          >
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: "border-box",
+            justifyContent: "center",
+          },
+        }}
+      >
+        <Toolbar />
+        <Box sx={{ overflow: "auto" }}>{menuList()}</Box>
+      </Drawer>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Toolbar />
         <Outlet />
       </Box>
-      <Drawer
-        anchor="left"
-        open={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-      >
-        {menuList()}
-      </Drawer>
-    </>
+    </Box>
   );
 };
