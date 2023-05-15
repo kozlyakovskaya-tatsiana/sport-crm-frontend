@@ -2,10 +2,10 @@ import { AxiosResponse } from "axios";
 import { CreateActivityRequest } from "./requests/CreateActivityRequest";
 import selfFitAxios from "../../axios/selfFitAxios";
 import { SPORT_ACTIVITIES_API } from "../endpoints";
-import { SportActivity } from "../../models/SportActivity";
+import { SportActivityView } from "./viewModels/SportActivityView";
 
-async function getActivities(): Promise<AxiosResponse<SportActivity[]>> {
-  return selfFitAxios.get<SportActivity[]>(SPORT_ACTIVITIES_API);
+async function getActivities(): Promise<AxiosResponse<SportActivityView[]>> {
+  return selfFitAxios.get<SportActivityView[]>(SPORT_ACTIVITIES_API);
 }
 async function createActivity(
   createActivityRequest: CreateActivityRequest

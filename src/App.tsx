@@ -6,6 +6,7 @@ import {
   ACTIVITIES_ROUTE,
   GROUPS_ROUTE,
   LOGIN_ROUTE,
+  SCHEDULE_ROUTE,
   SPORT_PLAYGROUNDS_ROUTE,
   TENANTS_ROUTE,
   USERS_MANAGEMENT_ROUTE,
@@ -20,6 +21,7 @@ import { ActivitiesPage } from "./pages/activities/ActivitiesPage";
 import { GroupsPage } from "./pages/groups/GroupsPage";
 import { SportPlaygroundsPage } from "./pages/sportplaygrounds/SportPlaygroundsPage";
 import { TenantsPage } from "./pages/tenants/TenantsPage";
+import { SchedulePage } from "./pages/schedule/SchedulePage";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -56,6 +58,10 @@ function App() {
         {
           path: TENANTS_ROUTE,
           element: <TenantsPage />,
+        },
+        {
+          path: SCHEDULE_ROUTE,
+          element: <SchedulePage />,
         },
       ],
     },

@@ -16,6 +16,7 @@ import {
 import {
   ACTIVITIES_ROUTE,
   GROUPS_ROUTE,
+  SCHEDULE_ROUTE,
   SPORT_PLAYGROUNDS_ROUTE,
   TENANTS_ROUTE,
   USERS_MANAGEMENT_ROUTE,
@@ -32,6 +33,7 @@ export const HomePage: React.FC = () => {
     {
       title: "Schedule",
       image: <TodayIcon sx={baseSxPropsForIcons} />,
+      onClick: () => navigate(SCHEDULE_ROUTE),
     },
     {
       title: "Groups",

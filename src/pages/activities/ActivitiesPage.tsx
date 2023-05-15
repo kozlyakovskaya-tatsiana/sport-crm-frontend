@@ -17,9 +17,10 @@ import { ActivitiesTable } from "../../components/sportActivities/activitiesTabl
 import { SportActivity } from "../../models/SportActivity";
 import { sportActivitiesService } from "../../api/activities/activitiyService";
 import { DialogWrapperWithCrossButton } from "../../components/DialogWrapperWithCrossButton";
+import { SportActivityView } from "../../api/activities/viewModels/SportActivityView";
 
 export const ActivitiesPage: React.FC = (props) => {
-  const [activities, setActivities] = React.useState<SportActivity[]>([]);
+  const [activities, setActivities] = React.useState<SportActivityView[]>([]);
   const [isCreateActivityModalOpen, setIsCreateActivityModalOpen] =
     React.useState(false);
   const [openDeleteWarningDialog, setOpenDeleteWarningDialog] =

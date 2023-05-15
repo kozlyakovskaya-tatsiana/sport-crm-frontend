@@ -29,6 +29,7 @@ import {
   GROUPS_ROUTE,
   HOME_ROUTE,
   LOGIN_ROUTE,
+  SCHEDULE_ROUTE,
   SPORT_PLAYGROUNDS_ROUTE,
   TENANTS_ROUTE,
   USERS_MANAGEMENT_ROUTE,
@@ -55,6 +56,7 @@ export const BaseLayout: React.FC = () => {
     {
       title: "Schedule",
       image: <TodayIcon sx={baseSxPropsForIcons} />,
+      onClick: () => navigate(SCHEDULE_ROUTE),
     },
     {
       title: "Groups",

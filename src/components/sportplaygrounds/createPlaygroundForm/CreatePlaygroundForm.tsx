@@ -16,6 +16,7 @@ import { SportActivity } from "../../../models/SportActivity";
 import { sportActivitiesService } from "../../../api/activities/activitiyService";
 import { UploadFilesArea } from "../../UploadFilesArea";
 import { useToastNotify } from "../../../contexts/NotificationToastContext";
+import { SportActivityView } from "../../../api/activities/viewModels/SportActivityView";
 
 export interface CreateSportPlaygroundFormValues {
   name: string;
@@ -39,9 +40,9 @@ export interface CreatePlaygroundFormProps {
 export const CreatePlaygroundForm: React.FC<CreatePlaygroundFormProps> = (
   props
 ) => {
-  const [sportActivities, setSportActivities] = React.useState<SportActivity[]>(
-    []
-  );
+  const [sportActivities, setSportActivities] = React.useState<
+    SportActivityView[]
+  >([]);
   const [imageSrc, setImageSrc] = React.useState<string>("");
   const inputToUploadImage = React.useRef<HTMLInputElement>(null);
 

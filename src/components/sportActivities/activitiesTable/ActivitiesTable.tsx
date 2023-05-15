@@ -17,12 +17,13 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { SportActivity } from "../../../models/SportActivity";
 import { StyledTableCell } from "../../../styledComponents/styledComponents";
 import { NoDataToDisplay } from "../../NoDataToDisplay";
+import { SportActivityView } from "../../../api/activities/viewModels/SportActivityView";
 
 const instructorsTableHeaders = ["Activity", "Cost per hour", "Groups"];
 const adminTableHeaders = [...instructorsTableHeaders, "", ""];
 
 export interface ActivitiesTableProps {
-  activities: SportActivity[];
+  activities: SportActivityView[];
   onDeleteActivityButtonClick: (activityId: string) => void;
 }
 export const ActivitiesTable: React.FC<ActivitiesTableProps> = (props) => {

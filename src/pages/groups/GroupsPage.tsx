@@ -35,15 +35,16 @@ import { CreateSportGroupRequest } from "../../api/sportGroups/requests/CreateSp
 import { sportGroupService } from "../../api/sportGroups/sportGroupService";
 import { SportGroup } from "../../models/SportGroup";
 import { SportGroupView } from "../../api/sportGroups/viewModels/SportGroupView";
+import { SportActivityView } from "../../api/activities/viewModels/SportActivityView";
 
 const membersTableHeaders = ["Name", "Phone number"];
 
 export const GroupsPage: React.FC = (props) => {
   const [isGroupModalDialogOpen, setIsGroupModalDialogOpen] =
     React.useState(false);
-  const [sportActivities, setSportActivities] = React.useState<SportActivity[]>(
-    []
-  );
+  const [sportActivities, setSportActivities] = React.useState<
+    SportActivityView[]
+  >([]);
   const [tenants, setTenants] = React.useState<Tenant[]>([]);
   const [sportGroups, setSportGroups] = React.useState<SportGroupView[]>([]);
 
